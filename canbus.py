@@ -12,6 +12,9 @@ import cantools
 from influxdb import InfluxDBClient
 from pprintpp import pprint as pp
 
+# Enable extra print messages
+verbose = False
+
 # If this variable is true then the program will store all 82 variables into the database
 all_keys = True
 
@@ -52,6 +55,9 @@ for i in allowed_keys_BMS:
 
 for i in range(0, 164):
     dataCELLS[i] = {"CellId":i, "CellVoltage":0, "CellResistance":0, "CellBalancing":0, "CellOpenVoltage":0}
+
+# This variable is used to tell if we have collected a good amount of cell data such that we shouldn't have any empty information in "dataCELLS"
+cells_count = 0
 
 # Load the CAN database for the BMS
 dbBMS = cantools.database.load_file("/home/pi/Documents/CAN_read/DBC_BMS.dbc")
@@ -118,10 +124,18 @@ def get_data():
         # Parse CELL CAN messages
         if (msg.arbitration_id == 0x36):
             decoded_msg = dbBMS.decode_message(msg.arbitration_id, msg.data)
-            dataCELLS[decoded_msg["CellId"]]["CellVoltage"] = decoded_msg["CellVoltage"]
-            dataCELLS[decoded_msg["CellId"]]["CellResistance"] = decoded_msg["CellResistance"]
-            dataCELLS[decoded_msg["CellId"]]["CellBalancing"] = decoded_msg["CellBalancing"]
-            dataCELLS[decoded_msg["CellId"]]["CellOpenVoltage"] = decoded_msg["CellOpenVoltage"]
+
+            try:
+                dataCELLS[decoded_msg["CellId"]]["CellVoltage"] = decoded_msg["CellVoltage"]
+                dataCELLS[decoded_msg["CellId"]]["CellResistance"] = decoded_msg["CellResistance"]
+                dataCELLS[decoded_msg["CellId"]]["CellBalancing"] = decoded_msg["CellBalancing"]
+                dataCELLS[decoded_msg["CellId"]]["CellOpenVoltage"] = decoded_msg["CellOpenVoltage"]
+
+                # We will count until we have counted 3 times the number of packs reported by the BMS
+                if cell_count < 492:
+                    cells_count = cells_count + 1
+            except:
+                print("Failed to save decoded_msg values into the dataCELLS dictionary. This can happen if the a corrupt CANBUS message is received and treated like a CELL message.")
 
         # This section will check if the CAN message came from the BMS.
         elif (msg.arbitration_id - 0x6B0 >= 0):
@@ -143,34 +157,40 @@ def get_data():
         else:
             return
 
-        # Store the data into our global dictionary before writing it to influxDB
-
-        #pp(dataBMS.items())
-
 
 def write_data(system, dataInput):
-    line = ""
     # If every value in data is None, meaning we have nothing to write, then skip writing to DB.
     if all_equal(dataInput, None):
         print("All_equal was True")
         return
-    # Must have a space after message to tell the query that you are entering fields
+
     # Start the line with RMS when we are writing RMS data to the database
     if system == "RMS":
         line = "RMS"
-        print("RMS Writing")
+        if verbose:
+            print("RMS Writing")
     # Start the line with BMS when we are writing BMS data to the database
     elif system == "BMS":
         line = "BMS"
-        print("BMS Writing")
+        if verbose:
+            print("BMS Writing")
 
+    # Must have a space after the message NAME to tell the query that you are entering fields
     sep = " "
+
+    #/******************** Create lines and write to the database **************************/#
+
+    # Write CELL data to the database
     if system == "CELLS":
         line = ""
+        # TODO Better empty dictionary detection
         if dataInput[1]["CellVoltage"] == -500:
             print("EMPTY CELLS")
             return
-        print("CELLS Writing")
+
+        if verbose:
+            print("CELLS Writing")
+
         for k, v in dataInput.items():
             newline = 1
             line = line + "CELL" + str(k)
@@ -186,8 +206,8 @@ def write_data(system, dataInput):
                 line = (line + toAdd)
             line = line + "\n"
         line = [line]
-        #pp(line)
-        #print("Boop")
+
+        # This function sends the "line" variable to be written to the database
         clientCELLS.write_points(points=line, time_precision="ms", protocol="line")
 
     else:
@@ -200,7 +220,8 @@ def write_data(system, dataInput):
                 sep = ","
                 line = (line + toAdd)
         line = [line]
-        # print(line)
+
+        # This function sends the "line" variable to be written to the database
         client.write_points(points=line, time_precision="ms", protocol="line")
 
 
@@ -214,7 +235,10 @@ try:
             write_data("RMS", dataRMS)
 
             write_data("BMS", dataBMS)
-            write_data("CELLS", dataCELLS)
+
+            if cells_count == 492:
+                write_data("CELLS", dataCELLS)
+
 except KeyboardInterrupt:
     os.system("sudo ifconfig can0 down")
     print("\nExiting")
