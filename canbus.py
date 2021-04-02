@@ -57,7 +57,7 @@ for i in range(0, 164):
     dataCELLS[i] = {"CellId":i, "CellVoltage":0, "CellResistance":0, "CellBalancing":0, "CellOpenVoltage":0}
 
 # This variable is used to tell if we have collected a good amount of cell data such that we shouldn't have any empty information in "dataCELLS"
-cells_count = 0
+cell_count = 0
 
 # Load the CAN database for the BMS
 dbBMS = cantools.database.load_file("/home/pi/Documents/CAN_read/DBC_BMS.dbc")
@@ -133,7 +133,7 @@ def get_data():
 
                 # We will count until we have counted 3 times the number of packs reported by the BMS
                 if cell_count < 492:
-                    cells_count = cells_count + 1
+                    cell_count = cell_count + 1
             except:
                 print("Failed to save decoded_msg values into the dataCELLS dictionary. This can happen if the a corrupt CANBUS message is received and treated like a CELL message.")
 
@@ -236,7 +236,7 @@ try:
 
             write_data("BMS", dataBMS)
 
-            if cells_count == 492:
+            if cell_count == 492:
                 write_data("CELLS", dataCELLS)
 
 except KeyboardInterrupt:
