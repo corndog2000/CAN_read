@@ -16,14 +16,14 @@ from pprintpp import pprint as pp
 verbose = False
 
 # If this variable is true then the program will store all 82 variables into the database
-all_keys = True
+all_keys = False
 
 if all_keys:
     # Here is a list of each piece of data that could be received from the RMS.
     allowed_keys_RMS = ["D1_Modulation_Index", "D2_Flux_Weakening_Output", "D3_Id_Command", "D4_Iq_Command", "D1_Commanded_Torque", "D2_Torque_Feedback", "D3_Power_On_Timer", "D1_Post_Fault_Lo", "D2_Post_Fault_Hi", "D3_Run_Fault_Lo", "D4_Run_Fault_Hi", "D1_VSM_State", "D1_PWM_Frequency", "D2_Inverter_State", "D3_Relay_1_Status", "D3_Relay_2_Status", "D3_Relay_3_Status", "D3_Relay_4_Status", "D3_Relay_5_Status", "D3_Relay_6_Status", "D4_Inverter_Run_Mode", "D4_Inverter_Discharge_State",
-                    "D5_Inverter_Command_Mode", "D5_Rolling_Counter", "D6_Inverter_Enable_State", "D6_Inverter_Enable_Lockout", "D7_Direction_Command", "D7_BMS_Active", "D7_BMS_Torque_Limiting", "D7_Max_Speed_Limiting", "D7_Low_Speed_Limiting", "D1_Flux_Command", "D2_Flux_Feedback", "D3_Id", "D4_Iq", "D1_DC_Bus_Voltage", "D2_Output_Voltage", "D3_VAB_Vd_Voltage", "D4_VBC_Vq_Voltage", "D1_Phase_A_Current", "D2_Phase_B_Current", "D3_Phase_C_Current", "D4_DC_Bus_Current", "D1_Motor_Angle_Electrical",
-                    "D2_Motor_Speed", "D3_Electrical_Output_Frequency", "D4_Delta_Resolver_Filtered", "D1_Digital_Input_1", "D2_Digital_Input_2", "D3_Digital_Input_3", "D4_Digital_Input_4", "D5_Digital_Input_5", "D6_Digital_Input_6", "D7_Digital_Input_7", "D8_Digital_Input_8", "D1_Analog_Input_1", "D2_Analog_Input_2", "D3_Analog_Input_3", "D4_Analog_Input_4", "D5_Analog_Input_5", "D6_Analog_Input_6", "D1_Project_Code_EEP_Ver", "D2_SW_Version",
-                    "D1_Reference_Voltage_1_5", "D2_Reference_Voltage_2_5", "D3_Reference_Voltage_5_0", "D4_Reference_Voltage_12_0", "D1_RTD4_Temperature", "D2_RTD5_Temperature", "D3_Motor_Temperature", "D4_Torque_Shudder", "D1_Control_Board_Temperature", "D2_RTD1_Temperature", "D3_RTD2_Temperature", "D4_RTD3_Temperature", "D1_Module_A", "D2_Module_B", "D3_Module_C", "D4_Gate_Driver_Board"]
+                        "D5_Inverter_Command_Mode", "D5_Rolling_Counter", "D6_Inverter_Enable_State", "D6_Inverter_Enable_Lockout", "D7_Direction_Command", "D7_BMS_Active", "D7_BMS_Torque_Limiting", "D7_Max_Speed_Limiting", "D7_Low_Speed_Limiting", "D1_Flux_Command", "D2_Flux_Feedback", "D3_Id", "D4_Iq", "D1_DC_Bus_Voltage", "D2_Output_Voltage", "D3_VAB_Vd_Voltage", "D4_VBC_Vq_Voltage", "D1_Phase_A_Current", "D2_Phase_B_Current", "D3_Phase_C_Current", "D4_DC_Bus_Current", "D1_Motor_Angle_Electrical",
+                        "D2_Motor_Speed", "D3_Electrical_Output_Frequency", "D4_Delta_Resolver_Filtered", "D1_Digital_Input_1", "D2_Digital_Input_2", "D3_Digital_Input_3", "D4_Digital_Input_4", "D5_Digital_Input_5", "D6_Digital_Input_6", "D7_Digital_Input_7", "D8_Digital_Input_8", "D1_Analog_Input_1", "D2_Analog_Input_2", "D3_Analog_Input_3", "D4_Analog_Input_4", "D5_Analog_Input_5", "D6_Analog_Input_6", "D1_Project_Code_EEP_Ver", "D2_SW_Version",
+                        "D1_Reference_Voltage_1_5", "D2_Reference_Voltage_2_5", "D3_Reference_Voltage_5_0", "D4_Reference_Voltage_12_0", "D1_RTD4_Temperature", "D2_RTD5_Temperature", "D3_Motor_Temperature", "D4_Torque_Shudder", "D1_Control_Board_Temperature", "D2_RTD1_Temperature", "D3_RTD2_Temperature", "D4_RTD3_Temperature", "D1_Module_A", "D2_Module_B", "D3_Module_C", "D4_Gate_Driver_Board"]
 
     allowed_keys_BMS = ["Pack_Current", "Pack_Inst_Voltage", "Pack_SOC", "Relay_State", "CRC_Checksum", "Avg_Cell_Voltage", "High_Cell_Voltage", "DTC_Flags_1", "DTC_Flags_2", "Populated_Cells", "Max_Cell_Number", "HEM_Mode", "Low_Opencell_ID", "High_Opencell_ID", "High_Intres_ID", "Low_Intres_ID", "Input_Supply_Voltage", "J1772_AC_Power_Limit", "J1772_AC_Voltage", "Low_Opencell_Voltage", "High_Opencell_Voltage", "Avg_Opencell_Voltage", "Low_Cell_Resistance",
                         "High_Cell_Resistance", "Avg_Cell_Resistance", "Low_Cell_Voltage_ID", "Total_Pack_Cycles", "Average_Temperature", "Internal_Temperature", "J1772_Plug_State", "J1772_AC_Current_Limit", "Low_Cell_Voltage", "Pack_CCL", "Pack_Open_Voltage", "Pack_Amphours", "Pack_Resistance", "Pack_DOD", "Pack_Summed_Voltage", "Pack_Abs_Current_Unsigned", "Pack_DCL", "Blank", "High_Temperature", "Low_Temperature", "Failsafe_Statuses", "CellId", "CellVoltage",
@@ -31,9 +31,9 @@ if all_keys:
 
 else:
     # Key filter. Only these values will be written to the database
-    allowed_keys_RMS = ["D1_Control_Board_Temperature"]
+    allowed_keys_RMS = ["D3_Id_Command", "D4_Iq_Command", "D1_Commanded_Torque", "D2_Torque_Feedback", "D1_Post_Fault_Lo", "D2_Post_Fault_Hi", "D3_Run_Fault_Lo", "D4_Run_Fault_Hi", "D3_Relay_1_Status", "D3_Relay_2_Status", "D4_Inverter_Discharge_State", "D5_Inverter_Command_Mode", "D6_Inverter_Enable_State", "D6_Inverter_Enable_Lockout", "D7_Direction_Command", "D3_Id", "D4_Iq", "D1_DC_Bus_Voltage", "D2_Output_Voltage", "D3_VAB_Vd_Voltage", "D4_VBC_Vq_Voltage", "D1_Phase_A_Current", "D2_Phase_B_Current", "D3_Phase_C_Current", "D4_DC_Bus_Current",  "D2_Motor_Speed", "D3_Electrical_Output_Frequency", "D4_Delta_Resolver_Filtered", "D1_Analog_Input_1", "D2_Analog_Input_2", "D3_Analog_Input_3", "D4_Analog_Input_4", "D5_Analog_Input_5", "D6_Analog_Input_6", "D4_Reference_Voltage_12_0", "D3_Motor_Temperature", "D4_Torque_Shudder", "D1_Control_Board_Temperature", "D1_Module_A", "D2_Module_B", "D3_Module_C", "D4_Gate_Driver_Board"]
 
-    allowed_keys_BMS = []
+    allowed_keys_BMS = ["Pack_Current", "Pack_Inst_Voltage", "Pack_SOC", "Relay_State", "Avg_Cell_Voltage", "High_Cell_Voltage", "DTC_Flags_1", "DTC_Flags_2", "Low_Opencell_ID", "High_Opencell_ID", "Input_Supply_Voltage", "J1772_AC_Power_Limit", "J1772_AC_Voltage", "Low_Opencell_Voltage", "High_Opencell_Voltage", "Avg_Opencell_Voltage", "Low_Cell_Voltage_ID", "Average_Temperature", "Internal_Temperature", "J1772_Plug_State", "J1772_AC_Current_Limit", "Low_Cell_Voltage", "Pack_CCL", "Pack_Open_Voltage", "Pack_Amphours", "Pack_Resistance", "Pack_DOD", "Pack_Summed_Voltage", "Pack_Abs_Current_Unsigned", "Pack_DCL", "High_Temperature", "Low_Temperature", "Failsafe_Statuses", "Populated_Cells", "Max_Cell_Number"]
 
 # Keeps track of last time the loop ran
 prev_time = 0
@@ -53,8 +53,22 @@ for i in allowed_keys_RMS:
 for i in allowed_keys_BMS:
     dataBMS[i] = None
 
-for i in range(0, 164):
-    dataCELLS[i] = {"CellId":i, "CellVoltage":0, "CellResistance":0, "CellBalancing":0, "CellOpenVoltage":0}
+
+'''
+# Cells 154 & 155
+for i in range(0, 151+1):
+    dataCELLS[i] = {"CellId": i, "CellVoltage": 0,
+                    "CellResistance": 0, "CellBalancing": 0, "CellOpenVoltage": 0}
+
+# 156 to 161
+for i in range(156, 163+1):
+    dataCELLS[i] = {"CellId": i, "CellVoltage": 0,
+                    "CellResistance": 0, "CellBalancing": 0, "CellOpenVoltage": 0}
+'''
+
+for i in range(0, 163+1):
+    dataCELLS[i] = {"CellId": i, "CellVoltage": 0,
+                    "CellResistance": 0, "CellBalancing": 0, "CellOpenVoltage": 0}
 
 # This variable is used to tell if we have collected a good amount of cell data such that we shouldn't have any empty information in "dataCELLS"
 cell_count = 0
@@ -82,12 +96,12 @@ can0 = can.interface.Bus(channel="can0", bustype="socketcan",
 print("\nCreated CAN interfafce connector")
 
 # Connect to the Influx Database
-client = InfluxDBClient(host="localhost", port=8086,
+client = InfluxDBClient(host="10.0.0.2", port=8086,
                         username="pi", password="solarpack", database="TELEMETRY")
 print("\nConnected to TELEMETRY database")
 
-clientCELLS = InfluxDBClient(host="localhost", port=8086,
-                        username="pi", password="solarpack", database="CELLS")
+clientCELLS = InfluxDBClient(host="10.0.0.2", port=8086,
+                             username="pi", password="solarpack", database="CELLS")
 print("\nConnected to CELLS database")
 
 
@@ -125,20 +139,24 @@ def get_data():
         if (msg.arbitration_id == 0x36):
             decoded_msg = dbBMS.decode_message(msg.arbitration_id, msg.data)
 
-            try:
-                dataCELLS[decoded_msg["CellId"]]["CellVoltage"] = decoded_msg["CellVoltage"]
-                dataCELLS[decoded_msg["CellId"]]["CellResistance"] = decoded_msg["CellResistance"]
-                dataCELLS[decoded_msg["CellId"]]["CellBalancing"] = decoded_msg["CellBalancing"]
-                dataCELLS[decoded_msg["CellId"]]["CellOpenVoltage"] = decoded_msg["CellOpenVoltage"]
+            dataCELLS[decoded_msg["CellId"]
+                      ]["CellVoltage"] = decoded_msg["CellVoltage"]
+            dataCELLS[decoded_msg["CellId"]
+                      ]["CellResistance"] = decoded_msg["CellResistance"]
+            dataCELLS[decoded_msg["CellId"]
+                      ]["CellBalancing"] = decoded_msg["CellBalancing"]
+            dataCELLS[decoded_msg["CellId"]
+                      ]["CellOpenVoltage"] = decoded_msg["CellOpenVoltage"]
 
-                # We will count until we have counted 3 times the number of packs reported by the BMS
-                if cell_count < 492:
-                    cell_count = cell_count + 1
-            except:
-                print("Failed to save decoded_msg values into the dataCELLS dictionary. This can happen if the a corrupt CANBUS message is received and treated like a CELL message.")
+            # We will count until we have counted 3 times the number of packs reported by the BMS
+            global cell_count
+            if cell_count < 480:
+                cell_count = cell_count + 1
+            # except:
+            #    print("Failed to save decoded_msg values into the dataCELLS dictionary. This can happen if the a corrupt CANBUS message is received and treated like a CELL message.")
 
         # This section will check if the CAN message came from the BMS.
-        elif (msg.arbitration_id - 0x6B0 >= 0):
+        elif ((msg.arbitration_id >= 0x6B0) and (msg.arbitration_id <= 0x6B6)):
             decoded_msg = dbBMS.decode_message(msg.arbitration_id, msg.data)
 
             for k in decoded_msg.keys():
@@ -146,7 +164,7 @@ def get_data():
                     dataBMS[k] = decoded_msg[k]
 
         # This section will check if the CAN message came from the RMS.
-        elif msg.arbitration_id - 0x0A0 >= 0:
+        elif ((msg.arbitration_id >= 0x0A0) and (msg.arbitration_id <= 0x0CF)):
             decoded_msg = dbRMS.decode_message(msg.arbitration_id, msg.data)
 
             for k in decoded_msg.keys():
@@ -161,7 +179,7 @@ def get_data():
 def write_data(system, dataInput):
     # If every value in data is None, meaning we have nothing to write, then skip writing to DB.
     if all_equal(dataInput, None):
-        print("All_equal was True")
+        print("All_equal was True - we have nothing to write to the database")
         return
 
     # Start the line with RMS when we are writing RMS data to the database
@@ -208,7 +226,8 @@ def write_data(system, dataInput):
         line = [line]
 
         # This function sends the "line" variable to be written to the database
-        clientCELLS.write_points(points=line, time_precision="ms", protocol="line")
+        clientCELLS.write_points(
+            points=line, time_precision="ms", protocol="line")
 
     else:
         for k, v in dataInput.items():
@@ -228,7 +247,7 @@ def write_data(system, dataInput):
 try:
     while True:
         get_data()
-
+        
         if ((get_time() - prev_time) > 500):
             prev_time = get_time()
 
@@ -236,7 +255,9 @@ try:
 
             write_data("BMS", dataBMS)
 
-            if cell_count == 492:
+            # This if statement is so we wait until a good amount of time has passed so we will have data for each cell in the database.
+            # This is to avoid writing None values into the database
+            if cell_count >= 480:
                 write_data("CELLS", dataCELLS)
 
 except KeyboardInterrupt:
